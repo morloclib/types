@@ -1,0 +1,176 @@
+module types (*)
+
+import prelude
+
+{-
+
+I need better data structures. "List" doesn't cut it.
+
+Sequence - general type of an ordered linear sequence of elements
+  List - singly-linked list, not optimal for space, fast addition at the beginning
+  Vector - optimal memory, fast random access, O(n) insertions, possibly O(1) append
+  Dequeue - doubly-linked list
+Set
+OrderedSet
+Bag
+
+-}
+
+
+type Filename = Str
+
+type Cpp => Filename = "std::string"
+type Cpp => Unit = "mlc::Unit" -- this is an enum with a single element, NOT `void`, which corresponds to bottom
+type Cpp => Real = "double"
+type Cpp => Int = "int"
+type Cpp => Str = "std::string"
+type Cpp => Bool = "bool"
+type Cpp => (Map a b) = "std::map<$1,$2>" a b
+type Cpp => (List a) = "std::vector<$1>" a
+type Cpp => (Tuple2 a b) = "std::tuple<$1,$2>" a b
+type Cpp => (Tuple3 a b c) = "std::tuple<$1,$2,$3>" a b c
+type Cpp => (Tuple4 a b c d) = "std::tuple<$1,$2,$3,$4>" a b c d
+type Cpp => (Tuple5 a b c d e) = "std::tuple<$1,$2,$3,$4,$5>" a b c d e
+
+type Py => Filename = "str"
+type Py => Unit = "None"
+type Py => Real = "float"
+type Py => Int = "int"
+type Py => Str = "str"
+type Py => Bool = "bool"
+type Py => (Map a b) = "dict" a b
+type Py => (List a) = "list" a
+type Py => (Tuple2 a b) = "tuple" a b
+type Py => (Tuple3 a b c) = "tuple" a b c
+type Py => (Tuple4 a b c d) = "tuple" a b c d
+type Py => (Tuple5 a b c d e) = "tuple" a b c d e
+
+type R => Filename = "character"
+type R => Unit = "NULL"
+type R => Int = "integer"
+type R => Real = "numeric"
+type R => Str = "character"
+type R => Bool = "logical"
+type R => (Map a b) = "list" a b -- this is a bit sus, R lists do not really have a generic key
+type R => (List a) = "list" a
+type R => (Tuple2 a b) = "list" a b
+type R => (Tuple3 a b c) = "list" a b c
+type R => (Tuple4 a b c d) = "list" a b c d
+type R => (Tuple5 a b c d e) = "list" a b c d e
+
+
+class Sized a where
+  size :: a -> Int
+
+class Show a where
+  show :: a -> Str
+
+class Ord a where
+  le :: a -> a -> Bool
+  lt :: a -> a -> Bool
+  ge :: a -> a -> Bool
+  gt :: a -> a -> Bool
+
+  -- lt x y = and (le x y) (not (le y x))
+  -- ge x y = le y x
+  -- gt x y = and (le y x) (not (le x y))
+
+class Eq a where
+  eq :: a -> a -> Bool
+  ne :: a -> a -> Bool
+
+  -- ne = not . eq
+
+not :: Bool -> Bool
+and :: Bool -> Bool -> Bool
+or  :: Bool -> Bool -> Bool
+
+class Addable a where
+  zero :: a
+  one :: a
+  add :: a -> a -> a
+  mul :: a -> a -> a
+  mod :: a -> a -> a
+  div :: a -> a -> a
+
+class Subtractable a where
+  neg :: a -> a
+  sub :: a -> a -> a
+
+
+-- class Semigroup a where
+--     (<>) :: a -> a -> a
+--
+-- class HasZero a where
+--     zero :: a
+--
+-- class Functor f where
+--     map :: (a -> b) -> f a -> f b
+--
+-- class HasInverse a where
+--     inverse :: a -> a where
+--         {inverse (inverse x) == x and (inverse x) != x; x <- a unless x == zero}
+--         inverse zero == zero
+--
+-- class HasNegative a where
+--     neg :: a -> a
+--
+-- class (Semigroup m, HasZero m) => Monoid m
+--
+-- class (Monoid a, HasInverse a) => Ring a
+--
+-- class (Functor f) => Applicative f where
+--     pure :: a -> f a
+--     (<*>) :: f (a -> b) -> f a -> f b
+--
+-- class (Applicative m) => Monad m where
+--     (>>=) :: m a -> (a -> m b) -> m b
+--
+-- class Foldable t where
+--     foldMap :: Monoid m => (a -> m) -> t a -> m
+--     length :: t a -> Int
+--
+-- class (FiniteSet f, Functor f) => Sequential f a Int where
+--     at :: f a n -> k:Int -> a where
+--         0 <= k < n
+--     head :: f a {k; k > 0} -> a
+--     take :: Int -> f a -> f a
+--     drop :: Int -> f a -> f a
+--
+-- class TableLike t where
+--     nrow :: t -> Int
+--     ncol :: t -> Int
+--
+-- class (HasZero a) => Nat a where
+--     zero = 0
+--
+-- class Num a where
+--     (+) :: a -> a -> a
+--     (-) :: a -> a -> a
+--     (*) :: a -> a -> a
+--     negate :: a -> a
+--     abs :: a -> a
+--     sign :: a -> a
+--     fromInteger :: Int -> a
+--
+-- class Num a => Fractional a where
+--     (/) :: a -> a -> a
+--     fromRational :: Rational -> a
+--
+-- class (Real a, Enum a) => Integral a where
+--     div :: a -> a -> a
+--     mod :: a -> a -> a
+--     divMod :: a -> a -> (a, a)
+--     toInteger :: a -> Int
+--
+-- class (HasZero a, HasInverse a, HasNegative a) => Real a where
+--     zero = 0.0
+--     inverse x = 1 / x
+--     neg x = -1.0 * x
+--
+-- class (Functor f, Foldable f) => Traversable f where
+--     traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+--
+-- type List a k = Tensor a [k]
+-- type Matrix a n m = Tensor a [n,m]
+

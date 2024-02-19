@@ -1,0 +1,11 @@
+name: types
+version: 0.0.0
+homepage: https://github.com/morloc-lib/types
+synopsis: Define basic type classes and defulat type definitions
+description: This module only defines types and polymorphic terms (typeclasses). No monomorphic type signatures are included, those are defined in the `conventions` module (which imports this module).
+category: language-base
+license: MIT
+author: "Zebulun Arendsee"
+maintainer: "zbwrnz@gmail.com"
+github: https://github.com/morloc-lib/types
+bug-reports: https://github.com/morloc-lib/types
