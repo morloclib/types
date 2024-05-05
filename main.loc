@@ -60,24 +60,24 @@ type R => (Tuple5 a b c d e) = "list" a b c d e
 
 
 class Sized a where
-  size :: a -> Int
+  size a :: a -> Int
 
 class Show a where
-  show :: a -> Str
+  show a :: a -> Str
 
 class Ord a where
-  le :: a -> a -> Bool
-  lt :: a -> a -> Bool
-  ge :: a -> a -> Bool
-  gt :: a -> a -> Bool
+  le a :: a -> a -> Bool
+  lt a :: a -> a -> Bool
+  ge a :: a -> a -> Bool
+  gt a :: a -> a -> Bool
 
   -- lt x y = and (le x y) (not (le y x))
   -- ge x y = le y x
   -- gt x y = and (le y x) (not (le x y))
 
 class Eq a where
-  eq :: a -> a -> Bool
-  ne :: a -> a -> Bool
+  eq a :: a -> a -> Bool
+  ne a :: a -> a -> Bool
 
   -- ne = not . eq
 
@@ -86,16 +86,16 @@ and :: Bool -> Bool -> Bool
 or  :: Bool -> Bool -> Bool
 
 class Addable a where
-  zero :: a
-  one :: a
-  add :: a -> a -> a
-  mul :: a -> a -> a
-  mod :: a -> a -> a
-  div :: a -> a -> a
+  zero a :: a
+  one a :: a
+  add a :: a -> a -> a
+  mul a :: a -> a -> a
+  mod a :: a -> a -> a
+  div a :: a -> a -> a
 
 class Subtractable a where
-  neg :: a -> a
-  sub :: a -> a -> a
+  neg a :: a -> a
+  sub a :: a -> a -> a
 
 
 -- class Semigroup a where
